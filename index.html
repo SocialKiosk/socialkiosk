@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>СоциальныйКиоск</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    background: #101827;
+    color: white;
+    font-family: Arial;
+}
+
+header {
+    background: #192438;
+    padding: 22px;
+    text-align: center;
+    color: #00ddff;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+main {
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 15px;
+}
+
+.card, .post {
+    background: #1b2940;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 90px;
+    background: #101827;
+    color: white;
+    border: 1px solid #00ddff;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    background: #00c9ed;
+    border: none;
+    padding: 12px 20px;
+    margin-top: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.like {
+    background: #293b58;
+    color: white;
+}
+
+.name {
+    color: #00ddff;
+    font-weight: bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>СоциальныйКиоск</header>
+
+<main>
+
+<div class="card">
+    <h2>Создать публикацию</h2>
+
+    <textarea id="message"
+    placeholder="Что у тебя нового?"></textarea>
+
+    <button onclick="publish()">Опубликовать</button>
+</div>
+
+<h2>Лента публикаций</h2>
+
+<div id="feed">
+
+<div class="post">
+    <div class="name">Администратор</div>
+    <p>Добро пожаловать в СоциальныйКиоск!</p>
+    <button class="like" onclick="like(this)">♡ Нравится 0</button>
+</div>
+
+</div>
+</main>
+
+<script>
+
+function like(button) {
+    var count = Number(button.getAttribute("data-count") || 0);
+
+    if (button.getAttribute("data-liked") == "yes") {
+        count--;
+        button.setAttribute("data-liked", "no");
+        button.textContent = "♡ Нравится " + count;
+    } else {
+        count++;
+        button.setAttribute("data-liked", "yes");
+        button.textContent = "♥ Нравится " + count;
+    }
+
+    button.setAttribute("data-count", count);
+}
+
+function publish() {
+    var input = document.getElementById("message");
+    var text = input.value.trim();
+
+    if (text == "") {
+        alert("Напиши сообщение!");
+        return;
+    }
+
+    var post = document.createElement("div");
+    post.className = "post";
+
+    var name = document.createElement("div");
+    name.className = "name";
+    name.textContent = "Ты";
+
+    var message = document.createElement("p");
+    message.textContent = text;
+
+    var button = document.createElement("button");
+    button.className = "like";
+    button.textContent = "♡ Нравится 0";
+    button.onclick = function() {
+        like(button);
+    };
+
+    post.appendChild(name);
+    post.appendChild(message);
+    post.appendChild(button);
+
+    var feed = document.getElementById("feed");
+    feed.insertBefore(post, feed.firstChild);
+
+    input.value = "";
+}
+
+</script>
+
+</body>
+</html>
